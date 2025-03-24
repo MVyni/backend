@@ -27,7 +27,17 @@ app.post("/users", (req, res) => {
 })
 
 
+app.put("/users/:id", (req,res) => {
+    console.log("entrando no put");
+    
+    res.status(201).send(req.body)
+})
 
+app.delete("/users/:id", (req,res) => {
+    console.log("entrando no delete");
+    
+    res.status(201).send(req.params.id)
+})
 
 app.listen(3001, () => {
     console.log("entrando no servidor")
