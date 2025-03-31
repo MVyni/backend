@@ -6,7 +6,7 @@ let data = [];
 
 app.get("/users", (req, res) => {
     console.log("entrou no get")
-    res.status(201).send(data);
+    res.status(201).send({alunos: data});
 })
 
 app.get("/users/:id", (req, res) => {
@@ -15,7 +15,7 @@ app.get("/users/:id", (req, res) => {
     let index = data.findIndex((item) => item.id === idParams)
 
     let newData = data[index]
-    res.status(201).send(newData)
+    res.status(201).send({alunos: newData})
 })
 
 app.post("/users", (req, res) => {
@@ -23,20 +23,29 @@ app.post("/users", (req, res) => {
     let newBody = req.body
     data.push(newBody)
 
-    res.status(201).send(data)
+    res.status(201).send({alunos: data})
 })
 
 
 app.put("/users/:id", (req,res) => {
     console.log("entrando no put");
+    const alunoId = req.params.id;
+    let index = data.findIndex((item) => item.id === alunoId)
     
-    res.status(201).send(req.body)
+    data[index] = req.body
+
+    res.status(201).send({aluno: data[index] = req.body});
 })
 
 app.delete("/users/:id", (req,res) => {
     console.log("entrando no delete");
     
-    res.status(201).send(req.params.id)
+    const alunoId = req.params.id
+    let index = data.findIndex((aluno) => aluno.id === alunoId)
+
+    data.splice(index, 1)
+
+    res.status(201).send({alunos: data})
 })
 
 app.listen(3001, () => {
