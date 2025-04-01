@@ -27,7 +27,7 @@ app.post("/veiculos", (req, res) => {
     res.status(201).send({carros: veiculos});
 })
 
-app.post("/veiculos/:id", (req, res) => {
+app.put("/veiculos/:id", (req, res) => {
     const veiculoId = req.params.id
     const index = veiculos.findIndex((item) => item.id === veiculoId)
     veiculos[index] = req.body
