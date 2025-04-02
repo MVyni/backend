@@ -1,46 +1,31 @@
 const express = require("express");
 const app = express();
+const db = require("./dataBaseCarros")
+const dbContext = db.CarrosDataBase()
 app.use(express.json());
 
-let veiculos = [{
-    "id": "1",
-    "carro": "evoque",
-    "ano": "2021",
-    "valor": "500.000"
-}];
 
-
-app.get("/veiculos", (req, res) => {
-    res.status(201).send({carros: veiculos})
+app.get("/veiculos", async (req, res) => {
+    res.status(201).send(await dbContext.list())
 })
 
-app.get("/veiculos/:id", (req, res) => {
+//BY ID
+app.get("/veiculos/:id", async (req, res) => {
     const veiculoId = req.params.id
-    const index = veiculos.findIndex((item) => item.id === veiculoId)
-    
-    res.status(201).send(veiculos[index])
+    res.status(201).send(await dbContext.get(veiculoId))
 })
 
-app.post("/veiculos", (req, res) => {
-    veiculos.push(req.body)
-
-    res.status(201).send({carros: veiculos});
+app.post("/veiculos", async (req, res) => {
+    res.status(201).send(await dbContext.insert(req.body));
 })
 
-app.put("/veiculos/:id", (req, res) => {
-    const veiculoId = req.params.id
-    const index = veiculos.findIndex((item) => item.id === veiculoId)
-    veiculos[index] = req.body
-    
-    res.status(201).send({carros: veiculos})
+app.put("/veiculos/:id", async (req, res) => {
+
+    res.status(201).send(await dbContext.update(req.body, req.params.id))
 })
 
-app.delete("/veiculos/:id", (req, res) => {
-    const veiculoId = req.params.id
-    const index = veiculos.findIndex((item) => item.id === veiculoId)
-    veiculos.splice(index, 1)
-    
-    res.status(201).send({carros: veiculos})
+app.delete("/veiculos/:id", async (req, res) => {
+    res.status(201).send(await dbContext.del(req.params.id))
 })
 
 
